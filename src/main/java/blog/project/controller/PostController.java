@@ -1,15 +1,12 @@
 package blog.project.controller;
 
-import blog.project.entity.Post;
 import blog.project.payload.PostDto;
+import blog.project.payload.PostResponse;
 import blog.project.service.PostService;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import blog.project.utils.AppConstants;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 /**
  * Created by Oybek Karimjanov
@@ -32,11 +29,13 @@ public class PostController {
     }
 
     @GetMapping("/get")
-    public ResponseEntity<List<PostDto>> getAllPosts(
-           @RequestParam(value = "pageNo", defaultValue = "0", required = false) int pageNo,
-           @RequestParam(value = "pageSize", defaultValue = "10", required = false) int pageSize
+    public ResponseEntity<PostResponse> getAllPosts(
+           @RequestParam(value = "pageNo", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER, required = false) int pageNo,
+           @RequestParam(value = "pageSize", defaultValue = AppConstants.DEFAULT_PAGE_SIZE, required = false) int pageSize,
+           @RequestParam(value = "sortBy", defaultValue = AppConstants.DEFAULT_SORT_BY, required = false) String sortBy,
+           @RequestParam(value = "sortDir", defaultValue = AppConstants.DEFAULT_SORT_DIRECTION, required = false) String sortDir
     ){
-        return new ResponseEntity<>(postService.getAllPosts(pageNo,  pageSize), HttpStatus.OK);
+        return new ResponseEntity<>(postService.getAllPosts(pageNo,  pageSize, sortBy, sortDir), HttpStatus.OK);
     }
 
     @GetMapping("/get/{id}")
